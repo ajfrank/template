@@ -1,13 +1,11 @@
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
 body {
-  font-family: sans-serif;
-}
-
-a {
-  text-decoration: none;
-}
-
-label {
-  display: block;
+  font-size: 18px;
+  line-height: 28px;
+  margin: 25px;
 }
 
 nav a {
@@ -15,7 +13,12 @@ nav a {
   margin: 1em;
 }
 
-form div {
-  margin: 1em;
-  display: inline-block;
+.wrapper{
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(12, 1fr)
+}
+
+.loginbtn{
+  justify-self: center;
 }

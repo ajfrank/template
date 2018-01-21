@@ -10,7 +10,39 @@
  * Now that you've got the main idea, check it out in practice below!
  */
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Group} = require('../server/db/models')
+const Promise = require('bluebird')
+const faker = require('faker')
+const numUsers = 100
+const numGroups = 10
+
+function doTimes (n, fn) {
+  const results = []
+  while (n--) results.push(fn(n))
+  return results
+}
+
+function randUser (n) {
+  return User.build({
+    name: faker.name.findName(),
+    email: faker.internet.email(),
+    password: '123'
+  })
+}
+
+function randGroup (n) {
+  return Group.build({
+    name: faker.lorem.words()
+  })
+}
+
+function generateUsers () {
+  return doTimes(numUsers, randUser)
+}
+
+function generateGroups () {
+  return doTimes(numGroups, randGroup)
+}
 
 async function seed () {
   await db.sync({force: true})
@@ -18,13 +50,12 @@ async function seed () {
   // Whoa! Because we `await` the promise that db.sync returns, the next line will not be
   // executed until that promise resolves!
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
+  const users = await Promise.map(generateUsers(), user => user.save())
+  const groups = await Promise.map(generateGroups(), group => group.save())
   // Wowzers! We can even `await` on the right-hand side of the assignment operator
   // and store the result that the promise resolves to in a variable! This is nice!
   console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${groups.length} groups`)
   console.log(`seeded successfully`)
 }
 

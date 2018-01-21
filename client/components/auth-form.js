@@ -2,30 +2,43 @@ import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import {auth} from '../store'
+import TextField from 'material-ui/TextField'
+import FlatButton from 'material-ui/FlatButton'
 
 /**
  * COMPONENT
  */
 const AuthForm = (props) => {
   const {name, displayName, handleSubmit, error} = props
-
   return (
-    <div>
+    <div className="wrapper">
       <form onSubmit={handleSubmit} name={name}>
         <div>
-          <label htmlFor="email"><small>Email</small></label>
-          <input name="email" type="text" />
+          <TextField
+            hintText="Email"
+            name="email"
+          />
         </div>
         <div>
-          <label htmlFor="password"><small>Password</small></label>
-          <input name="password" type="password" />
+          <TextField
+            hintText="Password"
+            name="password"
+          />
         </div>
         <div>
-          <button type="submit">{displayName}</button>
+          <FlatButton
+            label={displayName}
+            primary={true} type="submit"
+            className="loginbtn"
+          />
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
-      <a href="/auth/google">{displayName} with Google</a>
+      {/*      <FlatButton
+        label={`${displayName} with Google`}
+        secondary={true}
+        href="/auth/google"
+      /> */}
     </div>
   )
 }
