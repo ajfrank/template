@@ -52,11 +52,15 @@ async function seed () {
 
   const users = await Promise.map(generateUsers(), user => user.save())
   const groups = await Promise.map(generateGroups(), group => group.save())
-  // Wowzers! We can even `await` on the right-hand side of the assignment operator
-  // and store the result that the promise resolves to in a variable! This is nice!
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded ${groups.length} groups`)
-  console.log(`seeded successfully`)
+
+  await Promise.all([users.map(user => user.update({groupId: Math.floor(Math.random() * 10) + 1}))]).then(() => {
+    // Wowzers! We can even `await` on the right-hand side of the assignment operator
+    // and store the result that the promise resolves to in a variable! This is nice!
+    console.log(`seeded ${users.length} users`)
+    console.log(`seeded ${groups.length} groups`)
+    console.log(`seeded successfully`)
+  })
+    .catch(err => console.log(err))
 }
 
 // Execute the `seed` function

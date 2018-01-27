@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import AddUser from './adduser'
+import Group from './group'
 
 /**
  * COMPONENT
@@ -13,6 +14,7 @@ export const UserHome = (props) => {
     <div>
       <h2>Welcome, {email}</h2>
       <AddUser/>
+      <Group/>
     </div>
   )
 }

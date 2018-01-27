@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import store, {
+  fetchSelectedUser,
   fetchUsers,
   fetchGroups,
   fetchGroup
@@ -15,7 +16,8 @@ class AddUser extends Component {
   constructor (props) {
     super(props)
 
-    this.handleChange = this.handleChange.bind(this)
+    this.handleGroupChange = this.handleGroupChange.bind(this)
+    this.handleUserChange = this.handleUserChange.bind(this)
   }
 
   componentDidMount () {
@@ -23,13 +25,16 @@ class AddUser extends Component {
     store.dispatch(fetchGroups())
   }
 
-  handleChange (e, idx, value) {
-    console.log(value)
+  handleGroupChange (e, idx, value) {
     store.dispatch(fetchGroup(value))
   }
 
+  handleUserChange (e, idx, value) {
+    store.dispatch(fetchSelectedUser(value))
+  }
+
   render () {
-    const {users, groups} = this.props
+    const {selectedUser, users, group, groups} = this.props
 
     if (!users.length) return (<div>Loading...</div>)
 
@@ -38,10 +43,18 @@ class AddUser extends Component {
         <h2>Add User to Group</h2>
         <SelectField
           floatingLabelText="Select Group"
-          value={this.props.group.id}
-          onChange={this.handleChange}
+          value={group.id}
+          onChange={this.handleGroupChange}
         >
-          {groups.map(group => <MenuItem value={group.id} primaryText={group.name} key={group.id}/>)}
+          {groups.map(g => <MenuItem value={g.id} primaryText={g.name} key={g.id}/>)}
+        </SelectField>
+        <br/>
+        <SelectField
+          floatingLabelText="Select User"
+          value={selectedUser.id}
+          onChange={this.handleUserChange}
+        >
+          {users.map(u => <MenuItem value={u.id} primaryText={u.email} key={u.id}/>)}
         </SelectField>
       </div>
     )
@@ -51,8 +64,9 @@ class AddUser extends Component {
 /**
  * CONTAINER
  */
-const mapState = ({users, groups, group}) => {
+const mapState = ({users, selectedUser, groups, group}) => {
   return {
+    selectedUser,
     users,
     groups,
     group

@@ -9,6 +9,7 @@ const Group = require('./group')
  */
 
 Group.hasMany(User)
+User.belongsTo(Group)
 
 /**
  * We'll export all of our models here, so that any time a module needs a model,
