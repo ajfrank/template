@@ -21,6 +21,15 @@ router
       .catch(next)
   })
 
+  .put('/:id/:groupId', (req, res, next) => {
+    User.findById(req.params.id)
+      .then(user => user.update({
+        groupId: req.params.groupId
+      }))
+      .then(result => res.send(result))
+      .catch(next)
+  })
+
   .post('/', (req, res, next) => {
     const {user} = req.body
     User.create({

@@ -4,10 +4,13 @@ import store, {
   fetchSelectedUser,
   fetchUsers,
   fetchGroups,
-  fetchGroup
+  fetchGroup,
+  updateUser
 } from '../store'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
+import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 
 /**
  * COMPONENT
@@ -18,6 +21,7 @@ class AddUser extends Component {
 
     this.handleGroupChange = this.handleGroupChange.bind(this)
     this.handleUserChange = this.handleUserChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount () {
@@ -33,8 +37,14 @@ class AddUser extends Component {
     store.dispatch(fetchSelectedUser(value))
   }
 
+  handleClick (e) {
+    const {selectedUser, group} = this.props
+    store.dispatch(updateUser(selectedUser.id, group.id))
+  }
+
   render () {
     const {selectedUser, users, group, groups} = this.props
+    const {handleGroupChange, handleUserChange, handleClick} = this
 
     if (!users.length) return (<div>Loading...</div>)
 
@@ -44,7 +54,7 @@ class AddUser extends Component {
         <SelectField
           floatingLabelText="Select Group"
           value={group.id}
-          onChange={this.handleGroupChange}
+          onChange={handleGroupChange}
         >
           {groups.map(g => <MenuItem value={g.id} primaryText={g.name} key={g.id}/>)}
         </SelectField>
@@ -52,10 +62,12 @@ class AddUser extends Component {
         <SelectField
           floatingLabelText="Select User"
           value={selectedUser.id}
-          onChange={this.handleUserChange}
+          onChange={handleUserChange}
         >
           {users.map(u => <MenuItem value={u.id} primaryText={u.email} key={u.id}/>)}
         </SelectField>
+        <br/>
+        <RaisedButton label="Add To Group" primary={true} onClick={handleClick}/>
       </div>
     )
   }

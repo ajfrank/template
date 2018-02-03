@@ -24,6 +24,15 @@ export function fetchUsers () {
   }
 }
 
+export function updateUser (id, groupId) {
+  return function thunk (dispatch) {
+    return axios
+      .put(`/api/users/${id}/${groupId}`)
+      .then(() => fetchAllUsers(dispatch))
+      .catch(err => console.error(err))
+  }
+}
+
 // reducer
 export default function users (users = [], action) {
   switch (action.type) {

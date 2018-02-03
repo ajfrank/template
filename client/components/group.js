@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 import store, {
   fetchUsers,
   fetchGroups,
-  fetchGroup
+  fetchGroup,
+  updateUser
 } from '../store'
 import {
   Table,
@@ -13,6 +14,7 @@ import {
   TableRow,
   TableRowColumn
 } from 'material-ui/Table'
+import FlatButton from 'material-ui/FlatButton'
 
 class Group extends Component {
   constructor (props) {
@@ -31,6 +33,7 @@ class Group extends Component {
     }
     this.handleToggle = this.handleToggle.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleToggle = (event, toggled) => {
@@ -42,6 +45,12 @@ class Group extends Component {
   handleChange = (event) => {
     this.setState({height: event.target.value});
   };
+
+  handleClick(e){
+    const {selectedUser, group} = this.props
+    //need to get user id somehow
+    //store.dispatch(updateUser(selectedUser.id, 0))
+  }
 
   render () {
     const {users, group} = this.props
@@ -69,6 +78,7 @@ class Group extends Component {
             <TableRow>
               <TableHeaderColumn>ID</TableHeaderColumn>
               <TableHeaderColumn>Email</TableHeaderColumn>
+              <TableHeaderColumn> </TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody
@@ -82,6 +92,7 @@ class Group extends Component {
                 <TableRow key={u.id}>
                   <TableRowColumn selectable={false} >{u.id}</TableRowColumn>
                   <TableRowColumn selectable={false}>{u.email}</TableRowColumn>
+                  <TableRowColumn selectable={false}><FlatButton label="Remove" secondary={true} onClick={this.handleClick}/></TableRowColumn>
                 </TableRow>
               )
             })}
