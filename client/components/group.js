@@ -46,10 +46,8 @@ class Group extends Component {
     this.setState({height: event.target.value});
   };
 
-  handleClick(e){
-    const {selectedUser, group} = this.props
-    //need to get user id somehow
-    //store.dispatch(updateUser(selectedUser.id, 0))
+  handleClick(userId){
+    // store.dispatch(updateUser(userId, 0))
   }
 
   render () {
@@ -92,7 +90,7 @@ class Group extends Component {
                 <TableRow key={u.id}>
                   <TableRowColumn selectable={false} >{u.id}</TableRowColumn>
                   <TableRowColumn selectable={false}>{u.email}</TableRowColumn>
-                  <TableRowColumn selectable={false}><FlatButton label="Remove" secondary={true} onClick={this.handleClick}/></TableRowColumn>
+                  <TableRowColumn selectable={false}><FlatButton label="Remove" secondary={true} onClick={() => this.handleClick(u.id)}/></TableRowColumn>
                 </TableRow>
               )
             })}
